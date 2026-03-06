@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gourmet Haven - Fine Dining Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0f0f0f;
+            --secondary-dark: #1a1a1a;
+            --tertiary-dark: #2d2d2d;
+            --accent-gold: #d4af37;
+            --accent-orange: #ff8c42;
+            --accent-light: #f5f5f5;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-orange);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.7), rgba(45, 45, 45, 0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23d4af37;stop-opacity:0.1" /><stop offset="100%" style="stop-color:%23ff8c42;stop-opacity:0.1" /></linearGradient></defs><rect width="1200" height="600" fill="%231a1a1a"/><rect width="1200" height="600" fill="url(%23grad)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            color: var(--primary-dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: var(--tertiary-dark);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-gold);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        .filter-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .menu-card {
+            background: var(--tertiary-dark);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            perspective: 1000px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.2);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .menu-card:hover .card-image {
+            transform: scale(1.1) rotateZ(2deg);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-gold);
+        }
+
+        .card-category {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-orange);
+        }
+
+        .btn-secondary {
+            padding: 0.6rem 1.2rem;
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-gold);
+            transform: scale(1.05);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 6rem 2rem;
+            background: var(--secondary-dark);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+
+        /* Reservation Section */
+        .reservation-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--tertiary-dark);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 2rem;
+            background: var(--secondary-dark);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            min-width: 50px;
+        }
+
+        .contact-details h4 {
+            color: var(--accent-gold);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-details p {
+            color: var(--text-secondary);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            background: var(--tertiary-dark);
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-orange);
+            transform: scale(1.2);
+        }
+
+        .opening-hours {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .opening-hours p {
+            margin: 0.3rem 0;
+        }
+
+        .footer-bottom {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Modal for Food Details */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--secondary-dark);
+            margin: 5vh auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            animation: slideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: var(--text-primary);
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--accent-gold);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-price {
+            color: var(--accent-orange);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent-gold);
+            background: var(--tertiary-dark);
+            color: var(--accent-gold);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 0.5rem;
+            background: var(--tertiary-dark);
+            border: 1px solid var(--accent-gold);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-to-cart {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        .btn-add-to-cart:hover {
+            background: var(--accent-gold);
+        }
+
+        .btn-close-modal {
+            background: var(--tertiary-dark);
+            color: var(--text-primary);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .btn-close-modal:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: var(--secondary-dark);
+            padding: 2rem;
+            z-index: 999;
+            transition: right 0.4s ease;
+            overflow-y: auto;
+            border-left: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 1rem;
+        }
+
+        .cart-header h2 {
+            color: var(--accent-gold);
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            padding: 1rem;
+            background: var(--tertiary-dark);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-name {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .cart-item-price {
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .cart-item-remove:hover {
+            color: var(--accent-orange);
+        }
+
+        .cart-total {
+            background: var(--tertiary-dark);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .total-label {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .total-amount {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            z-index: 2001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .payment-content {
+            background: var(--secondary-dark);
+            margin: 5vh auto;
+            padding: 2.5rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 1.5rem;
+        }
+
+        .payment-header h2 {
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-amount {
+            font-size: 2rem;
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            background: var(--tertiary-dark);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .payment-method:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .payment-method.active {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .payment-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        .payment-form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--tertiary-dark);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .payment-form-group input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .payment-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-pay {
+            flex: 1;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-cancel-payment {
+            flex: 1;
+            padding: 1rem;
+            background: var(--tertiary-dark);
+            color: var(--text-primary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel-payment:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        .payment-success {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .payment-success h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .payment-success p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            background: var(--tertiary-dark);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            margin: 2rem 0;
+        }
+
+        .qr-section h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .qr-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .qr-code-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .qr-code-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .qr-code-box img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+
+        .payment-success .qr-code-box img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .qr-label {
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .payment-form-qr {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+        }
+
+        .payment-form-qr p {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .payment-form-qr .qr-code-box {
+            padding: 0.6rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-form-qr .qr-code-box img {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .qr-container {
+                gap: 1rem;
+            }
+
+            .qr-code-box img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .whatsapp-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .hero {
+                margin-top: 50px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn-primary {
+                padding: 0.8rem 2rem;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 1500;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">🍽️ Missamma Family Restaurant</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#reservation">Reservation</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="cart-icon" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Missamma Family Restaurant</h1>
+            <p>మిస్సమ్మ ఫ్యామిలీ రెస్టారెంట్</p>
+            <p style="font-size: 1.2rem; color: var(--accent-gold); margin-top: 0.5rem;">⭐ 4.2 Rating • Family Dining At Its Best</p>
+            <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})" style="margin-top: 1.5rem;">Explore Menu</button>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <h2 class="section-title">Our Mouth-Watering Menu</h2>
+        <p class="section-subtitle">Authentic Andhra cuisine with traditional flavors</p>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterMenu('all')">All Dishes</button>
+            <button class="filter-btn" onclick="filterMenu('starters')">Starters</button>
+            <button class="filter-btn" onclick="filterMenu('main')">Main Course</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <h2 class="section-title" style="margin-bottom: 3rem;">About Our Restaurant</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Our Story</h3>
+                <p>Missamma Family Restaurant is a beloved local eatery in Chirala, serving authentic Andhra Pradesh cuisine with passion and tradition. Founded with the vision to bring authentic home-cooked flavors to everyone's table.</p>
+                <p>Our specialties include aromatic biryanis, flavorful fish curries, and traditional tandoori dishes. Each dish is prepared with the finest ingredients and traditional cooking methods passed down through generations.</p>
+                <p>With a 4.2-star rating from 698 satisfied customers, we're proud to be a favorite dining destination for families in Chirala. "Best veg and non veg food in Chirala town!" - Customer Review</p>
+            </div>
+            <div class="about-image">👨‍🍳</div>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section class="reservation-section" id="reservation">
+        <h2 class="section-title" style="margin-bottom: 3rem;">Book Your Table</h2>
+        <form onsubmit="submitReservation(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" required>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" min="1" max="12" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Special Requests</label>
+                <textarea rows="4" placeholder="Any dietary preferences or special occasions?"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Reserve Table</button>
+        </form>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <h2 class="section-title" style="margin-bottom: 3rem;">Contact Us</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-details">
+                        <h4>Location</h4>
+                        <p>Clock Tower Centre, Opposite to Municipal Complex<br>Beside Old Gopala Krishna Theatre<br>Paparajuthota, Chirala<br>Andhra Pradesh 523155</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-details">
+                        <h4>Phone</h4>
+                        <p>084668 81818</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>info@missammafamily.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🕐</div>
+                    <div class="contact-details">
+                        <h4>Hours</h4>
+                        <p>Open Daily<br>Closes 11:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                📍 Google Map Embed Here
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-icons">
+            <a href="#">📘</a>
+            <a href="#">🐦</a>
+            <a href="#">📷</a>
+            <a href="#">▶️</a>
+        </div>
+        <div class="opening-hours">
+            <p><strong>Opening Hours</strong></p>
+            <p>Open Daily</p>
+            <p>Closes 11:00 PM</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Missamma Family Restaurant. All rights reserved. | Family Dining Experience</p>
+        </div>
+    </footer>
+
+    <!-- Food Detail Modal -->
+    <div id="foodModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <div id="modalPrice" class="modal-price"></div>
+            <p id="modalDescription" class="modal-description"></p>
+
+            <div class="quantity-selector">
+                <button class="quantity-btn" onclick="adjustQuantity(-1)">-</button>
+                <input type="number" id="quantityInput" class="quantity-input" value="1" min="1">
+                <button class="quantity-btn" onclick="adjustQuantity(1)">+</button>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-add-to-cart" onclick="addToCart()">Add to Cart</button>
+                <button class="btn-close-modal" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cartContainer">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <div class="payment-header">
+                <h2>Secure Payment</h2>
+                <div class="payment-amount" id="paymentAmount">₹0</div>
+            </div>
+
+            <div id="paymentForm">
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPaymentMethod('card')">
+                        💳<br>Card
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                        📱<br>UPI
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('wallet')">
+                        💰<br>Wallet
+                    </div>
+                </div>
+
+                <div id="cardPayment">
+                    <div class="payment-form-group">
+                        <label>Cardholder Name</label>
+                        <input type="text" id="cardholderName" placeholder="John Doe">
+                    </div>
+
+                    <div class="payment-form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+
+                    <div class="payment-row">
+                        <div class="payment-form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="payment-form-group">
+                            <label>CVV</label>
+                            <input type="text" id="cvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="upiPayment" style="display: none;">
+                    <div class="payment-form-group">
+                        <label>UPI ID</label>
+                        <input type="text" id="upiId" placeholder="name@bank">
+                    </div>
+
+                    <!-- QR Code Section in UPI Section -->
+                    <div class="payment-form-qr">
+                        <p>📱 Quick Contact - 084668 81818</p>
+                        <div style="display: flex; justify-content: center; gap: 1rem;">
+                            <div class="qr-code-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=tel:084668-81818" alt="Call QR Code">
+                                <div class="qr-label" style="font-size: 0.8rem;">📞 Call</div>
+                            </div>
+                            <div class="qr-code-box">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://wa.me/918466881818?text=Hello%20Missamma%20Family%20Restaurant" alt="WhatsApp QR Code">
+                                <div class="qr-label" style="font-size: 0.8rem;">💬 WhatsApp</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="walletPayment" style="display: none;">
+                    <div class="payment-form-group">
+                        <label>Wallet Phone Number</label>
+                        <input type="text" id="walletPhone" placeholder="9876543210">
+                    </div>
+                </div>
+
+                <div class="payment-actions">
+                    <button class="btn-pay" onclick="processPayment()">💳 Pay Now</button>
+                    <button class="btn-cancel-payment" onclick="closePaymentModal()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="payment-success" id="paymentSuccess">
+                <div class="success-icon">✅</div>
+                <h3>Payment Successful!</h3>
+                <p>Thank you for your order</p>
+                <p>Order ID: <strong id="orderId"></strong></p>
+                <p style="margin-top: 1.5rem; color: var(--accent-gold);">Your food will be ready soon!</p>
+                <button class="btn-primary" onclick="completeOrder()" style="margin-top: 1.5rem;">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918466881818?text=Hello%20Missamma%20Family%20Restaurant,%20I%20would%20like%20to%20order!" class="whatsapp-btn" title="Contact via WhatsApp">
+        💬
+    </a>
+
+    <script>
+        // Menu Data
+        const menuData = [
+            {
+                id: 1,
+                name: "Gongura Mutton Biryani",
+                category: "main",
+                price: 280,
+                description: "Aromatic mutton biryani with tangy gongura leaves and traditional spices",
+                image: "https://img.sanishtech.com/u/1430a71606a1c815c6482f42534fa69f.jpg"
+            },
+            {
+                id: 2,
+                name: "Missamma Fish Roast",
+                category: "main",
+                price: 320,
+                description: "Fresh fish roasted to perfection with traditional coastal spices",
+                image: "https://img.sanishtech.com/u/3e9f2575b21f6206fcff875aab43642e.jpg"
+            },
+            {
+                id: 3,
+                name: "Chicken Biryani",
+                category: "main",
+                price: 240,
+                description: "Soft and tender chicken with naatu spices and basmati rice",
+                image: "https://img.sanishtech.com/u/a54603dd0936a8b5dc98721fc8b91b65.jpg"
+            },
+            {
+                id: 4,
+                name: "Veg Fried Rice",
+                category: "main",
+                price: 180,
+                description: "Aromatic fried rice with fresh vegetables and spices",
+                image: "https://img.sanishtech.com/u/5cfcda7dda0cd29e1929a1279349e592.jpg"
+            },
+            {
+                id: 5,
+                name: "Chicken Tandoori",
+                category: "starters",
+                price: 220,
+                description: "Marinated and grilled chicken with traditional tandoori spices",
+                image: "https://img.sanishtech.com/u/1570be0de102d2d7bf9702904ca028ed.jpg"
+            },
+            {
+                id: 6,
+                name: "Chicken Drumstick with Fried Onions",
+                category: "starters",
+                price: 200,
+                description: "Crispy fried chicken drumsticks with golden fried onions - must try!",
+                image: "https://img.sanishtech.com/u/9021e7f10caaaed4df5f194b131fa248.jpg"
+            },
+            {
+                id: 7,
+                name: "Mutton Dum Biryani",
+                category: "main",
+                price: 300,
+                description: "Slow-cooked mutton biryani with traditional Hyderabadi spices",
+                image: "https://img.sanishtech.com/u/9cd391e3e875c1a7cdf7e1ff9568403f.jpg"
+            },
+            {
+                id: 8,
+                name: "Fish Curry",
+                category: "main",
+                price: 260,
+                description: "Flavorful fish curry with coconut and traditional spices",
+                image: "https://img.sanishtech.com/u/ab5b2fe9b8e85af1542126f586156ff6.jpg"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let cart = [];
+        let currentModalItem = null;
+
+        // Initialize Menu
+        function initializeMenu() {
+            displayMenu('all');
+        }
+
+        function filterMenu(category) {
+            currentCategory = category;
+            displayMenu(category);
+
+            // Update button active state
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function displayMenu(category) {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = '';
+
+            const filteredMenu = category === 'all'
+                ? menuData
+                : menuData.filter(item => item.category === category);
+
+            filteredMenu.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="card-image">
+                    <div class="card-content">
+                        <div class="card-name">${item.name}</div>
+                        <div class="card-category">${item.category.toUpperCase()}</div>
+                        <div class="card-description">${item.description}</div>
+                        <div class="card-footer">
+                            <div class="card-price">₹${item.price}</div>
+                            <button class="btn-secondary" onclick="openModal(${item.id})">View Details</button>
+                        </div>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+        }
+
+        function openModal(itemId) {
+            const item = menuData.find(m => m.id === itemId);
+            if (item) {
+                currentModalItem = item;
+                document.getElementById('modalImage').src = item.image;
+                document.getElementById('modalTitle').textContent = item.name;
+                document.getElementById('modalPrice').textContent = `₹${item.price}`;
+                document.getElementById('modalDescription').textContent = item.description;
+                document.getElementById('quantityInput').value = 1;
+                document.getElementById('foodModal').style.display = 'block';
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('foodModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        function adjustQuantity(amount) {
+            const input = document.getElementById('quantityInput');
+            const newValue = parseInt(input.value) + amount;
+            if (newValue > 0) {
+                input.value = newValue;
+            }
+        }
+
+        function addToCart() {
+            if (currentModalItem) {
+                const quantity = parseInt(document.getElementById('quantityInput').value);
+                const cartItem = {
+                    ...currentModalItem,
+                    quantity: quantity,
+                    cartId: Date.now()
+                };
+                cart.push(cartItem);
+                updateCartUI();
+                closeModal();
+                showNotification(`${currentModalItem.name} added to cart!`);
+            }
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartContainer = document.getElementById('cartContainer');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                return;
+            }
+
+            let cartHTML = '<div class="cart-items">';
+            let total = 0;
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                cartHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${item.cartId})">✕</button>
+                    </div>
+                `;
+            });
+
+            cartHTML += '</div>';
+            cartHTML += `
+                <div class="cart-total">
+                    <div class="total-label">Subtotal</div>
+                    <div class="total-amount">₹${total.toFixed(2)}</div>
+                </div>
+                <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
+            `;
+
+            cartContainer.innerHTML = cartHTML;
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        function checkout() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('paymentAmount').textContent = `₹${total.toFixed(2)}`;
+            document.getElementById('paymentModal').style.display = 'block';
+            document.body.classList.add('modal-open');
+            toggleCart();
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        function selectPaymentMethod(method) {
+            // Hide all payment methods
+            document.getElementById('cardPayment').style.display = 'none';
+            document.getElementById('upiPayment').style.display = 'none';
+            document.getElementById('walletPayment').style.display = 'none';
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.payment-method').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected payment method
+            if (method === 'card') {
+                document.getElementById('cardPayment').style.display = 'block';
+                event.target.closest('.payment-method').classList.add('active');
+            } else if (method === 'upi') {
+                document.getElementById('upiPayment').style.display = 'block';
+                event.target.closest('.payment-method').classList.add('active');
+            } else if (method === 'wallet') {
+                document.getElementById('walletPayment').style.display = 'block';
+                event.target.closest('.payment-method').classList.add('active');
+            }
+        }
+
+        function processPayment() {
+            const activeMethod = document.querySelector('.payment-method.active');
+            const paymentMethod = activeMethod.textContent.includes('Card') ? 'card' :
+                                 activeMethod.textContent.includes('UPI') ? 'upi' : 'wallet';
+
+            // Simple validation
+            if (paymentMethod === 'card') {
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cvv = document.getElementById('cvv').value;
+                const expiry = document.getElementById('expiryDate').value;
+
+                if (!cardNumber || !cvv || !expiry) {
+                    showNotification('Please fill in all card details');
+                    return;
+                }
+            } else if (paymentMethod === 'upi') {
+                const upiId = document.getElementById('upiId').value;
+                if (!upiId) {
+                    showNotification('Please enter UPI ID');
+                    return;
+                }
+            } else if (paymentMethod === 'wallet') {
+                const phone = document.getElementById('walletPhone').value;
+                if (!phone) {
+                    showNotification('Please enter phone number');
+                    return;
+                }
+            }
+
+            // Hide form and show success
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('paymentSuccess').style.display = 'block';
+
+            // Generate order ID
+            const orderId = 'MR' + Date.now();
+            document.getElementById('orderId').textContent = orderId;
+
+            showNotification('Payment Successful! 🎉');
+        }
+
+        function completeOrder() {
+            // Clear cart
+            cart = [];
+            updateCartUI();
+            closePaymentModal();
+
+            // Reset payment form
+            document.getElementById('paymentForm').style.display = 'block';
+            document.getElementById('paymentSuccess').style.display = 'none';
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('cvv').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('cardholderName').value = '';
+
+            showNotification('Thank you for your order! See you soon! 🍽️');
+        }
+
+        function submitReservation(event) {
+            event.preventDefault();
+            showNotification('Reservation confirmed! We look forward to your visit.');
+            event.target.reset();
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('foodModal');
+            const paymentModal = document.getElementById('paymentModal');
+
+            if (event.target === modal) {
+                closeModal();
+            }
+            if (event.target === paymentModal) {
+                closePaymentModal();
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', initializeMenu);
+    </script>
+</body>
+</html>
